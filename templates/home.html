@@ -3,12 +3,34 @@
 {% block title %}All boards{% endblock %}
 
 {% block content %}
-<ul>
-    {% for board in object_list %}
-        <li>
-            <p>{{ board.name }}</p>
-            <p>{{ board.description }}</p>
-        </li>
-    {% endfor %}
-</ul>
+<div class="container">
+    <ol class="breadcrumb my-4">
+        <li class="breadcrumb-item active">Boards</li>
+    </ol>
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Board</th>
+                <th>Posts</th>
+                <th>Topics</th>
+                <th>Last Post</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for board in object_list %}
+                <tr>
+                    <td>
+                        {{ board.name }}
+                        <small class="text-muted d-block">
+                            {{ board.description }}
+                        </small>
+                    </td>
+                    <td class="align-middle">0</td>
+                    <td class="align-middle">0</td>
+                    <td></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
