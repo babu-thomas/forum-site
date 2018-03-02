@@ -64,10 +64,12 @@ class BoardTopicsTests(TestCase):
         response = self.client.get(reverse('board_topics', args=[1]))
         self.assertTemplateUsed(response, 'topics.html')
 
-    def test_board_topics_view_contains_link_to_homepage(self):
+    def test_board_topics_view_contains_navigation_links(self):
         response = self.client.get(reverse('board_topics', args=[1]))
         home_url = reverse('home')
+        new_topic_url = reverse('new_topic', args=[1])
         self.assertContains(response, f'href="{home_url}"')
+        self.assertContains(response, f'href="{new_topic_url}"')
 
     def test_board_topics_view_lists_topics(self):
         response = self.client.get(reverse('board_topics', args=[1]))
