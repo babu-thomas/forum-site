@@ -2,37 +2,38 @@
 
 {% block title %}All boards{% endblock %}
 
+{% block breadcrumb %}
+<li class="breadcrumb-item active">
+    Boards
+</li>
+{% endblock %}
+
 {% block content %}
-<div class="container">
-    <ol class="breadcrumb my-4">
-        <li class="breadcrumb-item active">Boards</li>
-    </ol>
-    <table class="table">
-        <thead class="thead-dark">
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>Board</th>
+            <th>Posts</th>
+            <th>Topics</th>
+            <th>Last Post</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for board in object_list %}
             <tr>
-                <th>Board</th>
-                <th>Posts</th>
-                <th>Topics</th>
-                <th>Last Post</th>
+                <td>
+                    <a href="{% url 'board_topics' board.pk %}">
+                        {{ board.name }}
+                    </a>
+                    <small class="text-muted d-block">
+                        {{ board.description }}
+                    </small>
+                </td>
+                <td class="align-middle">0</td>
+                <td class="align-middle">0</td>
+                <td></td>
             </tr>
-        </thead>
-        <tbody>
-            {% for board in object_list %}
-                <tr>
-                    <td>
-                        <a href="{% url 'board_topics' board.pk %}">
-                            {{ board.name }}
-                        </a>
-                        <small class="text-muted d-block">
-                            {{ board.description }}
-                        </small>
-                    </td>
-                    <td class="align-middle">0</td>
-                    <td class="align-middle">0</td>
-                    <td></td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}
