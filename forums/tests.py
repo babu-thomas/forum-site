@@ -5,6 +5,12 @@ from .models import Board
 
 
 class HomePageTests(TestCase):
+    board_name = 'Django'
+    board_desc = 'Django board.'
+
+    def setUp(self):
+        Board.objects.create(name=self.board_name, description=self.board_desc)
+
     def test_home_page_status_code(self):
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
@@ -17,6 +23,11 @@ class HomePageTests(TestCase):
         response = self.client.get(reverse('home'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'home.html')
+
+    def test_home_view_contains_link_to_topics_page(self):
+        response = self.client.get(reverse('home'))
+        topics_url = reverse('board_topics', args=[1])
+        self.assertContains(response, f'href="{topics_url}"')
 
 
 class BoardTopicsTests(TestCase):
