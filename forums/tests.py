@@ -1,7 +1,8 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from .models import Board
+from .models import Board, Topic
 
 
 class HomePageTests(TestCase):
@@ -33,9 +34,16 @@ class HomePageTests(TestCase):
 class BoardTopicsTests(TestCase):
     board_name = 'Django'
     board_desc = 'Django board.'
+    topic_subject = 'New topic'
 
     def setUp(self):
+        self.user = get_user_model().objects.create_user(
+            username='testuser',
+            email='test@email.com',
+            password='secret',
+        )
         self.board = Board.objects.create(name=self.board_name, description=self.board_desc)
+        self.topic = Topic.objects.create(subject=self.topic_subject, board=self.board, starter=self.user)
 
     def test_board_get_absolute_url(self):
         self.assertEqual(self.board.get_absolute_url(), '/boards/1/')
@@ -60,3 +68,7 @@ class BoardTopicsTests(TestCase):
         response = self.client.get(reverse('board_topics', args=[1]))
         home_url = reverse('home')
         self.assertContains(response, f'href="{home_url}"')
+
+    def test_board_topics_view_lists_topics(self):
+        response = self.client.get(reverse('board_topics', args=[1]))
+        self.assertContains(response, self.topic_subject)

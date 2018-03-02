@@ -10,4 +10,5 @@ class BoardListView(ListView):
 
 class BoardDetailView(DetailView):
     template_name = 'topics.html'
+    context_object_name = 'board'
     model = Board

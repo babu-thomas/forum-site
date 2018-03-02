@@ -12,4 +12,26 @@
 {% endblock %}
 
 {% block content %}
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th>Topic</th>
+            <th>Started by</th>
+            <th>Replies</th>
+            <th>Views</th>
+            <th>Last Update at</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for topic in board.topics.all %}
+            <tr>
+                <td>{{ topic.subject }}</td>
+                <td>{{ topic.starter.username }}</td>
+                <td class="align-middle">0</td>
+                <td class="align-middle">0</td>
+                <td>{{ topic.last_updated }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}
