@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
+from .forms import NewTopicForm
 from .models import Board, Topic
 
 
@@ -103,3 +104,8 @@ class NewTopicTests(TestCase):
         response = self.client.get(reverse('new_topic', args=[1]))
         board_topics_url = reverse('board_topics', args=[1])
         self.assertContains(response, f'href="{board_topics_url}"')
+
+    def test_new_topic_view_contains_form(self):
+        response = self.client.get(reverse('new_topic', args=[1]))
+        form = response.context.get('form')
+        self.assertIsInstance(form, NewTopicForm)
