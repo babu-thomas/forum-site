@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ board.name }} {% endblock %}
+
+{% block content %}
+<div class="container">
+    <ol class="breadcrumb my-4">
+        <li class="breadcrumb-item">Boards</li>
+        <li class="breadcrumb-item active">{{ board.name }}</li>
+    </ol>
+</div>
+{% endblock %}
