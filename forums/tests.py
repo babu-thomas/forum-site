@@ -35,7 +35,10 @@ class BoardTopicsTests(TestCase):
     board_desc = 'Django board.'
 
     def setUp(self):
-        Board.objects.create(name=self.board_name, description=self.board_desc)
+        self.board = Board.objects.create(name=self.board_name, description=self.board_desc)
+
+    def test_board_get_absolute_url(self):
+        self.assertEqual(self.board.get_absolute_url(), '/boards/1/')
 
     def test_board_topics_status_code(self):
         response = self.client.get('/boards/1/')
