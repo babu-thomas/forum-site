@@ -1,38 +1,28 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block stylesheet %}
-<link rel="stylesheet" href="{% static 'css/users.css' %}">
-{% endblock %}
+{% extends 'base_users.html' %}
 
 {% block title %}Login{% endblock %}
 
-{% block body %}
-<div class="container">
-    <h1 class="logo text-center my-4">
-        <a href="{% url 'home' %}">Forums</a>
-    </h1>
-    <div class="row justify-content-center">
-        <div class="col-12 col-md-10 col-lg-8">
-            <div class="card">
-                <div class="card-body">
-                    <h3 class="card-title">Login to your account</h3>
-                    {% load crispy_forms_tags %}
-                    <form method="post" novalidate>
-                        {% csrf_token %}
-                        {{ form|crispy }}
-                        <button type="submit" class="btn btn-success">Login</button>
-                    </form>
-                </div>
-                <div class="card-footer text-muted text-center">
-                    Don't have an account? <a href="{% url 'signup' %}">Create account</a>
-                </div>
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">Login to your account</h3>
+                {% load crispy_forms_tags %}
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-success">Login</button>
+                </form>
             </div>
-            <div class="text-center my-2">
-                <small>
-                    <a href="#">Forgot your password?</a>
-                </small>
+            <div class="card-footer text-muted text-center">
+                Don't have an account? <a href="{% url 'signup' %}">Create account</a>
             </div>
+        </div>
+        <div class="text-center my-2">
+            <small>
+                <a href="#">Forgot your password?</a>
+            </small>
         </div>
     </div>
 </div>
