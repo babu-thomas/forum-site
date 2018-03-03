@@ -72,7 +72,7 @@ class UserCreationFormTests(TestCase):
         self.assertSequenceEqual(actual, expected)
 
 
-class PasswordResetTests(TestCase):
+class PasswordResetPageTests(TestCase):
     def setUp(self):
         self.response = self.client.get(reverse('password_reset'))
 
@@ -131,3 +131,31 @@ class InvalidPasswordResetTests(TestCase):
 
     def test_no_reset_email_sent(self):
         self.assertEqual(len(mail.outbox), 0)
+
+
+class PasswordResetMailTests(TestCase):
+    def setUp(self):
+        self.username = 'test'
+        self.email_id = 'test@example.com'
+        password = 'secretpassword'
+        user_model = get_user_model()
+        user_model.objects.create_user(username=self.username, email=self.email_id, password=password)
+        url = reverse('password_reset')
+        data = {'email': self.email_id}
+        self.response = self.client.post(url, data)
+        self.email_text = mail.outbox[0]
+
+    def test_email_body(self):
+        context = self.response.context
+        token = context.get('token')
+        uid = context.get('uid')
+        password_reset_token_url = reverse('password_reset_confirm', kwargs={
+            'uidb64': uid,
+            'token': token
+        })
+        self.assertIn(password_reset_token_url, self.email_text.body)
+        self.assertIn(self.username, self.email_text.body)
+        self.assertIn(self.email_id, self.email_text.body)
+
+    def test_email_to(self):
+        self.assertEqual([self.email_id, ], self.email_text.to)
