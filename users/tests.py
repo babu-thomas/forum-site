@@ -37,6 +37,14 @@ class SignupPageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(form, UserCreationForm)
 
+    def test_signup_form_inputs(self):
+        response = self.client.get(reverse('signup'))
+        self.assertContains(response, '<input', 5)
+        self.assertContains(response, 'type="text"', 1)
+        self.assertContains(response, 'type="email"', 1)
+        self.assertContains(response, 'type="password"', 2)
+        self.assertContains(response, '<button', 1)
+
     def test_successful_signup_redirects_to_homepage(self):
         response = self.client.post(reverse('signup'), self.data)
         self.assertRedirects(response, reverse('home'))
