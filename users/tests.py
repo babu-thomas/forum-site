@@ -59,3 +59,11 @@ class SignupPageTests(TestCase):
         response = self.client.get(reverse('home'))
         user = response.context.get('user')
         self.assertTrue(user.is_authenticated)
+
+
+class UserCreationFormTests(TestCase):
+    def test_form_has_fields(self):
+        form = UserCreationForm()
+        expected = ['username', 'email', 'password1', 'password2']
+        actual = list(form.fields)
+        self.assertSequenceEqual(actual, expected)
