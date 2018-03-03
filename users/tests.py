@@ -8,10 +8,12 @@ from .forms import CustomUserCreationForm as UserCreationForm
 class SignupPageTests(TestCase):
     def setUp(self):
         username = 'test'
+        email = 'test@example.com'
         password = 'secretpassword'
 
         self.data = {
             'username': username,
+            'email': email,
             'password1': password,
             'password2': password,
         }
