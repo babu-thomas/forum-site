@@ -19,7 +19,7 @@ class SignupPageTests(TestCase):
         }
 
     def test_signup_page_status_code(self):
-        response = self.client.get('/users/signup/')
+        response = self.client.get('/signup/')
         self.assertEqual(response.status_code, 200)
 
     def test_signup_view_url_by_name(self):
