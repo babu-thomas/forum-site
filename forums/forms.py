@@ -19,3 +19,4 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['message', ]
+        help_texts = {'message': 'Max length of the text is 4000 characters'}
