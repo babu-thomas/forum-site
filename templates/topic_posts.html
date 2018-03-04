@@ -20,7 +20,7 @@
 
 {% block content %}
 <div class="mb-4">
-    <a href="#" class="btn btn-primary" role="button">
+    <a href="{% url 'reply_topic' topic.board.pk topic.pk %}" class="btn btn-primary" role="button">
         Reply
     </a>
 </div>
