@@ -83,6 +83,12 @@ class NewTopicTests(TestCase):
 
     def setUp(self):
         self.board = Board.objects.create(name=self.board_name, description=self.board_desc)
+        user = get_user_model().objects.create_user(
+            username='testuser',
+            email='test@email.com',
+            password='secret',
+        )
+        self.client.force_login(user)
 
     def test_new_topic_status_code(self):
         response = self.client.get('/boards/1/new/')
