@@ -30,7 +30,11 @@
     <tbody>
         {% for topic in board.topics.all %}
             <tr>
-                <td>{{ topic.subject }}</td>
+                <td>
+                    <a href="{{ topic.get_absolute_url }}">
+                        {{ topic.subject }}
+                    </a>
+                </td>
                 <td>{{ topic.starter.username }}</td>
                 <td class="align-middle">0</td>
                 <td class="align-middle">0</td>
