@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView
+from django.db.models import Count
 
 from .forms import NewTopicForm, PostForm
 from .models import Board, Post, Topic
@@ -11,10 +12,11 @@ class BoardListView(ListView):
     model = Board
 
 
-class BoardDetailView(DetailView):
-    template_name = 'board_topics.html'
-    context_object_name = 'board'
-    model = Board
+def board_topics(request, pk):
+    board = get_object_or_404(Board, pk=pk)
+    topics = board.topics.order_by('-last_updated').annotate(replies=Count('posts') - 1)
+    context = {'board': board, 'topics': topics}
+    return render(request, 'board_topics.html', context)
 
 
 @login_required

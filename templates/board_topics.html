@@ -28,7 +28,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for topic in board.topics.all %}
+        {% for topic in topics %}
             <tr>
                 <td>
                     <a href="{{ topic.get_absolute_url }}">
@@ -36,7 +36,7 @@
                     </a>
                 </td>
                 <td>{{ topic.starter.username }}</td>
-                <td class="align-middle">0</td>
+                <td class="align-middle">{{ topic.replies }}</td>
                 <td class="align-middle">0</td>
                 <td>{{ topic.last_updated }}</td>
             </tr>
