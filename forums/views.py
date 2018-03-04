@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView
 
 from .forms import NewTopicForm
-from .models import Board, Post
+from .models import Board, Post, Topic
 
 
 class BoardListView(ListView):
@@ -42,3 +42,9 @@ def new_topic(request, pk):
 
     context = {'board': board, 'form': form}
     return render(request, 'new_topic.html', context)
+
+
+def topic_posts(request, pk, topic_pk):
+    topic = get_object_or_404(Topic, board__pk=pk, pk=topic_pk)
+    context = {'topic': topic}
+    return render(request, 'topic_posts.html', context)
