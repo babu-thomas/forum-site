@@ -1,8 +1,7 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView
-from django.contrib.auth.decorators import login_required
 
-from users.models import CustomUser as User
 from .forms import NewTopicForm
 from .models import Board, Post
 
@@ -17,11 +16,12 @@ class BoardDetailView(DetailView):
     context_object_name = 'board'
     model = Board
 
+
 @login_required
 def new_topic(request, pk):
     board = get_object_or_404(Board, pk=pk)
     # TODO: Replace with currently logged in user
-    user = User.objects.first()
+    user = request.user
 
     if request.method == 'POST':
         form = NewTopicForm(request.POST)
