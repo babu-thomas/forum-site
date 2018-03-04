@@ -14,6 +14,12 @@ class Board(models.Model):
     def get_absolute_url(self):
         return reverse('board_topics', args=[self.pk])
 
+    def get_posts_count(self):
+        return Post.objects.filter(topic__board=self).count()
+
+    def get_last_post(self):
+        return Post.objects.filter(topic__board=self).order_by('-created_at').first()
+
 
 class Topic(models.Model):
     subject = models.CharField(max_length=256)
