@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
+from django.utils.text import Truncator
 
 
 class Board(models.Model):
@@ -60,4 +61,5 @@ class Post(models.Model):
     )
 
     def __str__(self):
-        return self.message
+        truncated = Truncator(self.message)
+        return truncated.chars(30)
