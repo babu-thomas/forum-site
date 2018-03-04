@@ -63,7 +63,7 @@ class BoardTopicsTests(TestCase):
 
     def test_board_topics_view_uses_correct_template(self):
         response = self.client.get(reverse('board_topics', args=[1]))
-        self.assertTemplateUsed(response, 'topics.html')
+        self.assertTemplateUsed(response, 'board_topics.html')
 
     def test_board_topics_view_contains_navigation_links(self):
         response = self.client.get(reverse('board_topics', args=[1]))
