@@ -31,6 +31,12 @@ class Topic(models.Model):
     def __str__(self):
         return self.subject
 
+    def get_absolute_url(self):
+        return reverse('topic_posts', kwargs={
+            'pk': self.board.pk,
+            'topic_pk': self.pk
+        })
+
 
 class Post(models.Model):
     message = models.TextField(max_length=4000)
