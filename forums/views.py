@@ -46,6 +46,8 @@ def new_topic(request, pk):
 
 def topic_posts(request, pk, topic_pk):
     topic = get_object_or_404(Topic, board__pk=pk, pk=topic_pk)
+    topic.views += 1
+    topic.save()
     context = {'topic': topic}
     return render(request, 'topic_posts.html', context)
 
