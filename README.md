@@ -1,5 +1,5 @@
 # Forums ([Link](https://forums-babu-thomas.herokuapp.com/))
-A discussion forum site with different boards for different topics. Users can sign up, post topics and reply to different topics.
+A discussion forum site made using Django. Different boards for different topics are present. Users can sign up, post topics and reply to different topics.
 ## Screenshots
 | Boards | Topics |
 | --- | --- |
