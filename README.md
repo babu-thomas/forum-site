@@ -1,5 +1,8 @@
 # Forums ([Link](https://forums-babu-thomas.herokuapp.com/))
 A discussion forum site made using Django. Different boards for different topics are present. Users can sign up, post topics and reply to different topics.
+
+I am following along with [A Complete Beginner's Guide to Django](https://simpleisbetterthancomplex.com/series/beginners-guide/1.11/) by [Vitor Freitas](https://simpleisbetterthancomplex.com/about/) for making this. If you are looking to learn Django definitely check it out. Its a very well written comprehensive guide that takes you through building this site step by step. The guide is written for Django 1.11  so some changes will be needed if you are using Django 2.0.
+
 ## Screenshots
 | Boards | Topics |
 | --- | --- |
