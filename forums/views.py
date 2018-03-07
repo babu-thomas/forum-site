@@ -3,6 +3,7 @@ from django.db.models import Count
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.views.generic import ListView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import NewTopicForm, PostForm
 from .models import Board, Post, Topic
@@ -13,12 +14,16 @@ class BoardListView(ListView):
     model = Board
 
 
-class PostUpdateView(UpdateView):
+class PostUpdateView(LoginRequiredMixin, UpdateView):
     model = Post
     fields = ('message',)
     template_name = 'edit_post.html'
     pk_url_kwarg = 'post_pk'
     context_object_name = 'post'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(created_by=self.request.user)
 
     def form_valid(self, form):
         post = form.save(commit=False)

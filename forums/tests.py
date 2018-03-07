@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from .forms import NewTopicForm
-from .models import Board, Topic
+from .models import Board, Topic, Post
 
 
 class HomePageTests(TestCase):
@@ -115,3 +115,48 @@ class NewTopicTests(TestCase):
         response = self.client.get(reverse('new_topic', args=[1]))
         form = response.context.get('form')
         self.assertIsInstance(form, NewTopicForm)
+
+
+class PostUpdateViewTestCase(TestCase):
+    def setUp(self):
+        self.board = Board.objects.create(name='Django', description='Django board.')
+        self.username = 'testuser'
+        self.email = 'test@example.com'
+        self.password = 'secretpassword'
+        user = get_user_model().objects.create_user(
+            username=self.username,
+            email=self.email,
+            password=self.password
+        )
+        self.topic = Topic.objects.create(subject='Test topic', board=self.board, starter=user)
+        self.post = Post.objects.create(message='Test message', topic=self.topic, created_by=user)
+        self.url = reverse('edit_post', kwargs={
+            'pk': self.board.pk,
+            'topic_pk': self.topic.pk,
+            'post_pk': self.post.pk,
+        })
+
+
+class LoginRequiredPostUpdateViewTests(PostUpdateViewTestCase):
+    def test_redirection(self):
+        login_url = reverse('login')
+        response = self.client.get(self.url)
+        self.assertRedirects(response, f'{login_url}?next={self.url}')
+
+
+class UnauthorizedPostUpdateViewTests(PostUpdateViewTestCase):
+    def setUp(self):
+        super().setUp()
+        username = 'user2'
+        email = 'user2@example.com'
+        get_user_model().objects.create_user(
+            username=username,
+            email=email,
+            password=self.password
+        )
+        self.client.login(username=username, password=self.password)
+        self.response = self.client.get(self.url)
+
+    def test_status_code(self):
+        # Users should get a 404 response when editing another user's posts
+        self.assertEqual(self.response.status_code, 404)

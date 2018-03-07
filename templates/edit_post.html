@@ -20,3 +20,16 @@
     Edit
 </li>
 {% endblock %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+<form method="post" novalidate>
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-success">Save changes</button>
+    <a href="{% url 'topic_posts' post.topic.board.pk post.topic.pk %}"
+       class="btn btn-danger" role="button">
+        Cancel
+    </a>
+</form>
+{% endblock %}
