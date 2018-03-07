@@ -1,7 +1,8 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView
 from django.db.models import Count
+from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
+from django.views.generic import ListView, UpdateView
 
 from .forms import NewTopicForm, PostForm
 from .models import Board, Post, Topic
@@ -10,6 +11,21 @@ from .models import Board, Post, Topic
 class BoardListView(ListView):
     template_name = 'home.html'
     model = Board
+
+
+class PostUpdateView(UpdateView):
+    model = Post
+    fields = ('message',)
+    template_name = 'edit_post.html'
+    pk_url_kwarg = 'post_pk'
+    context_object_name = 'post'
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.updated_by = self.request.user
+        post.updated_at = timezone.now()
+        post.save()
+        return redirect('topic_posts', pk=post.topic.board.pk, topic_pk=post.topic.pk)
 
 
 def board_topics(request, pk):
