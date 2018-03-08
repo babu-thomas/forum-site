@@ -50,6 +50,25 @@ class TopicListView(ListView):
         return context
 
 
+class PostListView(ListView):
+    model = Post
+    context_object_name = 'posts'
+    template_name = 'topic_posts.html'
+    paginate_by = 2
+
+    def get_queryset(self):
+        self.topic = get_object_or_404(Topic, board__pk=self.kwargs.get('pk'), pk=self.kwargs.get('topic_pk'))
+        queryset = self.topic.posts.order_by('created_at')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        self.topic.views += 1
+        self.topic.save()
+        context = super().get_context_data(**kwargs)
+        context['topic'] = self.topic
+        return context
+
+
 @login_required
 def new_topic(request, pk):
     board = get_object_or_404(Board, pk=pk)
@@ -73,14 +92,6 @@ def new_topic(request, pk):
 
     context = {'board': board, 'form': form}
     return render(request, 'new_topic.html', context)
-
-
-def topic_posts(request, pk, topic_pk):
-    topic = get_object_or_404(Topic, board__pk=pk, pk=topic_pk)
-    topic.views += 1
-    topic.save()
-    context = {'topic': topic}
-    return render(request, 'topic_posts.html', context)
 
 
 @login_required
