@@ -97,6 +97,7 @@ def new_topic(request, pk):
 @login_required
 def reply_topic(request, pk, topic_pk):
     topic = get_object_or_404(Topic, board__pk=pk, pk=topic_pk)
+    posts = topic.posts.all()
     if request.method == 'POST':
         form = PostForm(request.POST)
         if form.is_valid():
@@ -107,5 +108,5 @@ def reply_topic(request, pk, topic_pk):
             return redirect('topic_posts', pk=pk, topic_pk=topic_pk)
     else:
         form = PostForm()
-    context = {'topic': topic, 'form': form}
+    context = {'topic': topic, 'posts': posts, 'form': form}
     return render(request, 'reply_topic.html', context)
