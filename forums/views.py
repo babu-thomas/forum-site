@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.views.generic import ListView, UpdateView
-from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import NewTopicForm, PostForm
 from .models import Board, Post, Topic
@@ -35,7 +36,20 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
 
 def board_topics(request, pk):
     board = get_object_or_404(Board, pk=pk)
-    topics = board.topics.order_by('-last_updated').annotate(replies=Count('posts') - 1)
+    queryset = board.topics.order_by('-last_updated').annotate(replies=Count('posts') - 1)
+    # Get 'page' HTTP GET parameter, return 1 if not present
+    page = request.GET.get('page', 1)
+    paginator = Paginator(queryset, 5)
+
+    try:
+        topics = paginator.page(page)
+    except PageNotAnInteger:
+        # Go to first page
+        topics = paginator.page(1)
+    except EmptyPage:
+        # Go to last page
+        topics = paginator.page(paginator.num_pages)
+
     context = {'board': board, 'topics': topics}
     return render(request, 'board_topics.html', context)
 
